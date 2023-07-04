@@ -4,7 +4,7 @@ import { supabase } from "./supabaseClient";
 
 export default function Auth() {
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("smarkwisai@gmail.com");
+  const [email, setEmail] = useState("");
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -36,7 +36,7 @@ export default function Auth() {
             <input
               className="inputField"
               type="email"
-              placeholder="Your email"
+              placeholder="ใส่ e-mail ของคุณที่นี่"
               value={email}
               required={true}
               onChange={(e) => setEmail(e.target.value)}

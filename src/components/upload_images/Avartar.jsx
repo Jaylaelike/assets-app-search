@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
-import PhotoCameraBackRoundedIcon from '@mui/icons-material/PhotoCameraBackRounded';
-import { pink } from '@mui/material/colors';
-
+import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
+import { pink } from "@mui/material/colors";
 
 export default function Avatar({ url, onUpload }) {
   //size in params
@@ -12,6 +11,7 @@ export default function Avatar({ url, onUpload }) {
   const [fileName, setFileName] = useState("");
   const [fileCount, setFileCount] = useState(0);
   const [files, setFiles] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -23,7 +23,7 @@ export default function Avatar({ url, onUpload }) {
       try {
         setUploading(true);
         const { data } = await supabase.storage.from("avatars").list("", {
-          limit: 100,
+          limit: 200,
           offset: 0,
           sortBy: { column: "created_at", order: "desc" },
         });
@@ -49,7 +49,7 @@ export default function Avatar({ url, onUpload }) {
   async function fetchFiles() {
     try {
       const { data } = await supabase.storage.from("avatars").list("", {
-        limit: 100,
+        limit: 200,
         offset: 0,
         sortBy: { column: "created_at", order: "desc" },
       });
@@ -95,7 +95,6 @@ export default function Avatar({ url, onUpload }) {
   //   }
   // }
 
-
   async function uploadAvatar(event) {
     try {
       setUploading(true);
@@ -128,15 +127,36 @@ export default function Avatar({ url, onUpload }) {
     }
   }
 
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredFiles = files.filter((file) =>
+    file.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
-      <div>
-        <label> ID </label>
+      <div className="flex justify-center pt-14 gap-3">
+        <div>
+          <label> ID </label>
+        </div>
         <input
           type="text"
           value={fileName}
           onChange={(e) => setFileName(e.target.value)}
           placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
+        />
+      </div>
+      <div className="flex justify-center pt-14 gap-3">
+        <div>
+          <label> ค้นหา </label>
+        </div>
+        <input
+          type="text"
+          placeholder="ป้อน ID ที่คุณค้นหา"
+          value={searchTerm}
+          onChange={handleSearch}
         />
       </div>
       {/* 
@@ -170,7 +190,7 @@ export default function Avatar({ url, onUpload }) {
       </div>
 
       <div className="flex justify-center p-8">
-      <PhotoCameraBackRoundedIcon  sx={{ fontSize: 40 , color:pink[500] }} />
+        <PhotoCameraBackRoundedIcon sx={{ fontSize: 40, color: pink[500] }} />
         <div className="flex justify-between mb-1">
           <span className="text-base font-medium text-blue-700 dark:text-white">
             Percent of Assets images
@@ -197,7 +217,7 @@ export default function Avatar({ url, onUpload }) {
         </ul> */}
         <div className="flex justify-center p-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {files.map((file) => (
+            {filteredFiles.map((file) => (
               <div
                 key={file.name}
                 style={{
@@ -210,7 +230,7 @@ export default function Avatar({ url, onUpload }) {
                   <img
                     className="h-auto max-w-full rounded-lg"
                     key={file.name}
-                    src={ import.meta.env.VITE_IMAGES_URL + `${file.name}`}
+                    src={import.meta.env.VITE_IMAGES_URL + `${file.name}`}
                     alt={file.name}
                   />
 

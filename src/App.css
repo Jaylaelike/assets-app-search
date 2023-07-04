@@ -1,8 +1,22 @@
-#root {
+:root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0rem;
   text-align: center;
+
+
+  --input-text-color-light: #333;
+  --input-text-color-dark: #eee;
+
+  color-scheme: light dark;
+
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
 .logo {
@@ -30,6 +44,56 @@
 @media (prefers-reduced-motion: no-preference) {
   a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #ffffff;
+    background-color: #242424;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #213547;
+  }
+}
+
+input[type="text"] {
+  background-color: var(--input-text-color-light);
+  color: var(--input-text-color-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="text"] {
+    background-color: var(--input-text-color-dark);
+    color: var(--input-text-color-light);
+  }
+}
+
+input[type="email"] {
+  background-color: var(--input-text-color-light);
+  color: var(--input-text-color-dark);
+}
+
+@media (prefers-color-scheme: dark) {
+  input[type="email"] {
+    background-color: var(--input-text-color-dark);
+    color: var(--input-text-color-light);
   }
 }
 

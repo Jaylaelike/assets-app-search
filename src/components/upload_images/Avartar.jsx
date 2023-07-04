@@ -95,6 +95,7 @@ export default function Avatar({ url, onUpload }) {
   //   }
   // }
 
+
   async function uploadAvatar(event) {
     try {
       setUploading(true);

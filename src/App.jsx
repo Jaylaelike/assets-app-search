@@ -12,7 +12,6 @@ function App() {
           <Route path="Products" element={<Products />}></Route>
           <Route path="Images" element={<Products />}></Route>
         </Routes>
-   
     </>
   );
 }

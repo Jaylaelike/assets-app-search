@@ -3,7 +3,15 @@ import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
 import { pink } from "@mui/material/colors";
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import {
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 
 export default function Avatar({ url, onUpload }) {
   //size in params
@@ -15,6 +23,7 @@ export default function Avatar({ url, onUpload }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -127,6 +136,7 @@ export default function Avatar({ url, onUpload }) {
       alert(error.message);
     } finally {
       setUploading(false);
+      setShowAlert(true)
     }
   }
 
@@ -138,7 +148,7 @@ export default function Avatar({ url, onUpload }) {
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  ///Delete images 
+  ///Delete images
 
   const handleDelete = (file) => {
     setSelectedFile(file);
@@ -147,16 +157,16 @@ export default function Avatar({ url, onUpload }) {
 
   const handleDeleteConfirmation = async () => {
     try {
-      await supabase.storage.from('avatars').remove([selectedFile.name]);
+      await supabase.storage.from("avatars").remove([selectedFile.name]);
 
       // Remove the deleted file from the state
       setFiles(files.filter((file) => file.name !== selectedFile.name));
       setSelectedFile(null);
       setOpenDialog(false);
     } catch (error) {
-      console.error('Error deleting file:', error.message);
-    }finally{
-      fetchFiles()
+      console.error("Error deleting file:", error.message);
+    } finally {
+      fetchFiles();
     }
   };
 
@@ -165,34 +175,45 @@ export default function Avatar({ url, onUpload }) {
     setOpenDialog(false);
   };
 
-
+  //Show alert for upload state success
+  const handleAlertClose = () => {
+    setShowAlert(false);
+  };
 
   return (
     <div>
-      <div className="flex justify-center pt-14 gap-3">
-        <div>
-          <label> ID </label>
+      <div className="grid grid-cols-1 justify-center p-8 pt-0">
+        <div className="flex justify-center gap-3">
+          <div>
+            <label> ID </label>
+          </div>
+          <input
+            type="search"
+            id="default-search"
+            value={fileName}
+            onChange={(e) => setFileName(e.target.value)}
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
+            required
+          ></input>
         </div>
-        <input
-          type="text"
-          value={fileName}
-          onChange={(e) => setFileName(e.target.value)}
-          placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
-        />
-      </div>
-      <div className="flex justify-center pt-14 gap-3">
-        <div>
-          <label> ค้นหา </label>
+        <div className="flex justify-center pt-14 gap-3">
+          <div>
+            <label> ค้นหา </label>
+          </div>
+
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="ป้อน ID ที่คุณค้นหา"
+            value={searchTerm}
+            onChange={handleSearch}
+          ></input>
         </div>
-        <input
-          type="text"
-          placeholder="ป้อน ID ที่คุณค้นหา"
-          value={searchTerm}
-          onChange={handleSearch}
-        />
       </div>
 
-      <div className="flex justify-center pt-10">
+      <div className="flex justify-center pt-2">
         <label className="button primary block" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
         </label>
@@ -225,9 +246,13 @@ export default function Avatar({ url, onUpload }) {
         </div>
       </div>
 
-      <div>
-        <h1>List of Files</h1>
-        <p>Total Files: {Math.round((fileCount * 6001) / 100)} / 6001 </p>
+      <div className="pt-0">
+        <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl lg:text-4xl dark:text-white">
+          Images Assets
+        </h1>
+        <p className="text-3xl text-gray-500 dark:text-white">
+          Total Files: {Math.round((fileCount * 6001) / 100)} / 6001{" "}
+        </p>
         {/* <ul>
           {files.map((file) => (
             <li key={file.name}>{file.name}</li>
@@ -256,7 +281,7 @@ export default function Avatar({ url, onUpload }) {
                     type="button"
                     className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
                     // onClick={() => deleteImage(file.name)}
-                    onClick={()=> handleDelete(file)}
+                    onClick={() => handleDelete(file)}
                   >
                     ลบ
                   </button>
@@ -269,14 +294,35 @@ export default function Avatar({ url, onUpload }) {
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Delete Image</DialogTitle>
-        <DialogContent>
-          คุณต้องการจะลบรูป: {selectedFile?.name}?
-        </DialogContent>
+        <DialogContent>คุณต้องการจะลบรูป: {selectedFile?.name}?</DialogContent>
         <DialogActions>
-          <Button onClick={handleDeleteConfirmation} color="secondary">Delete</Button>
-          <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+          <Button onClick={handleDeleteConfirmation} color="secondary">
+            Delete
+          </Button>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
         </DialogActions>
       </Dialog>
+
+      <Snackbar
+        open={showAlert}
+        autoHideDuration={5000} // Duration to show the alert in milliseconds (adjust as needed)
+        onClose={handleAlertClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MuiAlert
+          onClose={handleAlertClose}
+          severity="success"
+          elevation={6}
+          variant="filled"
+        >
+          เย้ 🥳 อัพโหลดไฟล์เสร็จแล้วค่ะ 🙏🏻
+        </MuiAlert>
+      </Snackbar>
     </div>
   );
 }

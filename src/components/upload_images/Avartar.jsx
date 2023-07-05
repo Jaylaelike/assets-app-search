@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
 import { pink } from "@mui/material/colors";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 
 export default function Avatar({ url, onUpload }) {
   //size in params
@@ -12,6 +13,8 @@ export default function Avatar({ url, onUpload }) {
   const [fileCount, setFileCount] = useState(0);
   const [files, setFiles] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -66,18 +69,18 @@ export default function Avatar({ url, onUpload }) {
     }
   }
 
-  async function deleteImage(fileName) {
-    try {
-      await supabase.storage.from("avatars").remove([fileName]);
+  // async function deleteImage(fileName) {
+  //   try {
+  //     await supabase.storage.from("avatars").remove([fileName]);
 
-      // Remove the deleted file from the state
-      setFiles(files.filter((file) => file.name !== fileName));
-    } catch (error) {
-      console.error("Error deleting file:", error.message);
-    } finally {
-      fetchFiles();
-    }
-  }
+  //     // Remove the deleted file from the state
+  //     setFiles(files.filter((file) => file.name !== fileName));
+  //   } catch (error) {
+  //     console.error("Error deleting file:", error.message);
+  //   } finally {
+  //     fetchFiles();
+  //   }
+  // }
 
   // async function downloadImage(path) {
   //   try {
@@ -135,6 +138,35 @@ export default function Avatar({ url, onUpload }) {
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  ///Delete images 
+
+  const handleDelete = (file) => {
+    setSelectedFile(file);
+    setOpenDialog(true);
+  };
+
+  const handleDeleteConfirmation = async () => {
+    try {
+      await supabase.storage.from('avatars').remove([selectedFile.name]);
+
+      // Remove the deleted file from the state
+      setFiles(files.filter((file) => file.name !== selectedFile.name));
+      setSelectedFile(null);
+      setOpenDialog(false);
+    } catch (error) {
+      console.error('Error deleting file:', error.message);
+    }finally{
+      fetchFiles()
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setSelectedFile(null);
+    setOpenDialog(false);
+  };
+
+
+
   return (
     <div>
       <div className="flex justify-center pt-14 gap-3">
@@ -159,20 +191,6 @@ export default function Avatar({ url, onUpload }) {
           onChange={handleSearch}
         />
       </div>
-      {/* 
-      {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          className="avatar image"
-          style={{ height: size, width: size }}
-        />
-      ) : (
-        <div
-          className="avatar no-image"
-          style={{ height: size, width: size }}
-        />
-      )} */}
 
       <div className="flex justify-center pt-10">
         <label className="button primary block" htmlFor="single">
@@ -237,7 +255,8 @@ export default function Avatar({ url, onUpload }) {
                   <button
                     type="button"
                     className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    onClick={() => deleteImage(file.name)}
+                    // onClick={() => deleteImage(file.name)}
+                    onClick={()=> handleDelete(file)}
                   >
                     ลบ
                   </button>
@@ -247,6 +266,17 @@ export default function Avatar({ url, onUpload }) {
           </div>
         </div>
       </div>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Delete Image</DialogTitle>
+        <DialogContent>
+          คุณต้องการจะลบรูป: {selectedFile?.name}?
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteConfirmation} color="secondary">Delete</Button>
+          <Button onClick={handleCloseDialog} color="primary">Cancel</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

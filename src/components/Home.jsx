@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CardAssets from "./Card";
 import SearchIcon from '@mui/icons-material/Search';
-import { pink ,blueGrey } from "@mui/material/colors";
+import { blueGrey } from "@mui/material/colors";
 
 function Home() {
   const [query, setQuery] = useState("");

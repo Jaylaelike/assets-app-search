@@ -8,8 +8,12 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from 'react-router-dom';
 
-export const CardAssets = ({ data, query }) => {
+
+
+
+export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +21,16 @@ export const CardAssets = ({ data, query }) => {
       setLoading(false);
     }, 3000);
   }, []);
+
+  const navigate = useNavigate();
+
+  const handleClick = (itemId) => {
+    navigate(`/FetchDetial/${itemId}`);
+  };
+
+  // const navigate = useNavigate();
+  
+  //console.log(`data is : ${data.map(item => item.No )}`);
 
 
   return (
@@ -90,6 +104,8 @@ export const CardAssets = ({ data, query }) => {
                 height="140"
                 image={import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg"}
                 alt="Nicola Sturgeon on a TED talk stage"
+                key={item.id}
+                onClick={() => handleClick(item.No)}
               />
             )}
 

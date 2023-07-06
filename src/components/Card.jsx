@@ -18,9 +18,6 @@ export const CardAssets = ({ data, query }) => {
     }, 3000);
   }, []);
 
-  if (!data || data.length === 0) {
-    return <p>{`ไม่พบข้อมูลทรัพย์สินในระบบ "${query}"`}</p>;
-  }
 
   return (
     <Grid
@@ -44,7 +41,9 @@ export const CardAssets = ({ data, query }) => {
                 ) : (
                   <Avatar
                     alt="Ted talk"
-                    src="https://pbs.twimg.com/profile_images/877631054525472768/Xp5FAPD5_reasonably_small.jpg"
+                    src={
+                      import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg"
+                    }
                   />
                 )
               }
@@ -89,7 +88,7 @@ export const CardAssets = ({ data, query }) => {
               <CardMedia
                 component="img"
                 height="140"
-                image="https://pi.tedcdn.com/r/talkstar-photos.s3.amazonaws.com/uploads/72bda89f-9bbf-4685-910a-2f151c4f3a8a/NicolaSturgeon_2019T-embed.jpg?w=512"
+                image={import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg"}
                 alt="Nicola Sturgeon on a TED talk stage"
               />
             )}

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CardAssets from "./Card";
-
+import SearchIcon from '@mui/icons-material/Search';
+import { pink ,blueGrey } from "@mui/material/colors";
 
 function Home() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
-
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,20 +34,43 @@ function Home() {
     if (query.length === 0 || query.length > 2) fetchData();
   }, [query]);
 
-  console.log(query);
+  // console.log(query);
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+    setQuery(event.target.value.toLowerCase());
+  };
 
   return (
     <div>
-      <input
+      <div className="flex justify-center p-5 gap-3">
+        <div>
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="ค้นหาทรัพย์สิน"
+            value={searchTerm}
+            onChange={handleSearch}
+          ></input>
+
+          {data?.length === 0 ? (
+            <div className="flex justify-center pt-8 gap-3">
+              <p> {`ไม่พบข้อมูลทรัพย์สินในระบบ "${searchTerm}"`}</p>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+        <SearchIcon sx={{ fontSize: 40, color: blueGrey[500] }} />
+      </div>
+      {/* <input
         className="search"
         placeholder="Search..."
         onChange={(e) => setQuery(e.target.value.toLowerCase())}
-      />
+      /> */}
 
-      {/* <Table data={data}  query={query} */}
-
-
-      <CardAssets  data={data} query={query} />
+      <CardAssets data={data} query={query} />
     </div>
   );
 }

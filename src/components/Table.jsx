@@ -1,4 +1,10 @@
-function Table({ data }) {
+/* eslint-disable react/prop-types */
+function Table({ data, query }) {
+
+  if (!data || data.length === 0) {
+    return <p>No matches for {query}</p>;
+  }
+
   return (
     <>
       <table>
@@ -16,17 +22,7 @@ function Table({ data }) {
             <th>Description</th>
             <th>Brand</th>
             <th>Model</th>
-            {/* <th>Serial_No</th>
-              <th>Part_Number</th>
-              <th>Status</th>
-              <th>Repair</th> */}
-            {/* <th>Purchse</th>
-              <th>Onair_date</th>
-              <th>Faccility_Owner</th>
-              <th>Location</th>
-              <th>Remark</th>
-              <th>Modifired</th>
-              <th>Editor</th> */}
+     
           </tr>
           {data.map((item) => (
             <tr key={item.id}>

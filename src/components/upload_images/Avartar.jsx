@@ -47,7 +47,7 @@ export default function Avatar({ url, onUpload }) {
         setFiles(newData);
         console.log(data);
 
-        setFileCount(((newData.length / 6001) * 100).toFixed(2));
+        setFileCount(((newData.length / 6057) * 100).toFixed(2));
       } catch (error) {
         console.error("Error listing files:", error.message);
       } finally {
@@ -72,7 +72,7 @@ export default function Avatar({ url, onUpload }) {
       newData.pop();
       setFiles(newData);
 
-      setFileCount(((newData.length / 6001) * 100).toFixed(2));
+      setFileCount(((newData.length / 6057) * 100).toFixed(2));
     } catch (error) {
       console.error("Error listing files:", error.message);
     }
@@ -136,7 +136,7 @@ export default function Avatar({ url, onUpload }) {
       alert(error.message);
     } finally {
       setUploading(false);
-      setShowAlert(true)
+      setShowAlert(true);
     }
   }
 
@@ -183,7 +183,7 @@ export default function Avatar({ url, onUpload }) {
   return (
     <div>
       <div className="grid grid-cols-1 justify-center p-8 pt-0">
-        <div className="flex justify-center gap-3">
+        <div className="flex justify-center  gap-3">
           <div>
             <label> ID </label>
           </div>
@@ -192,24 +192,34 @@ export default function Avatar({ url, onUpload }) {
             id="default-search"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="block  p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
             required
           ></input>
         </div>
-        <div className="flex justify-center pt-14 gap-3">
+        <div className="flex justify-center pt-10 gap-3">
           <div>
             <label> ค้นหา </label>
           </div>
 
-          <input
-            type="search"
-            id="default-search"
-            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="ป้อน ID ที่คุณค้นหา"
-            value={searchTerm}
-            onChange={handleSearch}
-          ></input>
+          <div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="ป้อน ID ที่คุณค้นหา"
+              value={searchTerm}
+              onChange={handleSearch}
+            ></input>
+
+            {filteredFiles?.length === 0 ? (
+              <div className="flex justify-center pt-8 gap-3">
+                <p> {`ไม่พบรูปภาพที่ค้นหา "${searchTerm}"`}</p>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
       </div>
 
@@ -251,7 +261,7 @@ export default function Avatar({ url, onUpload }) {
           Images Assets
         </h1>
         <p className="text-3xl text-gray-500 dark:text-white">
-          Total Files: {Math.round((fileCount * 6001) / 100)} / 6001{" "}
+          Total Files: {Math.round((fileCount * 6057) / 100)} / 6057{" "}
         </p>
         {/* <ul>
           {files.map((file) => (

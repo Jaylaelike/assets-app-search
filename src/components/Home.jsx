@@ -43,7 +43,8 @@ function Home() {
         onChange={(e) => setQuery(e.target.value.toLowerCase())}
       />
 
-      <Table data={data} />
+      <Table data={data}  query={query}
+      />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Table from "./Table";
+import CardAssets from "./Card";
 
 
 function Home() {
@@ -43,8 +43,10 @@ function Home() {
         onChange={(e) => setQuery(e.target.value.toLowerCase())}
       />
 
-      <Table data={data}  query={query}
-      />
+      {/* <Table data={data}  query={query} */}
+
+
+      <CardAssets  data={data} query={query} />
     </div>
   );
 }

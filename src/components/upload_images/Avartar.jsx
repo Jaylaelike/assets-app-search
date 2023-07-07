@@ -15,6 +15,22 @@ import {
   AlertTitle,
 } from "@mui/material";
 
+import { Skeleton } from "@mui/material";
+
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+
+const CardContentNoPadding = styled(CardContent)(`
+  padding: 0;
+  &:last-child {
+    padding-bottom: 0;
+  }
+`);
+
 export default function Avatar({ url, onUpload }) {
   //size in params
   // const [avatarUrl, setAvatarUrl] = useState(null);
@@ -27,11 +43,18 @@ export default function Avatar({ url, onUpload }) {
   const [openDialog, setOpenDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertFail, setShowAlertFail] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // if (url) downloadImage(url);
     fetchFiles();
   }, [url]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  }, []);
 
   useEffect(() => {
     async function fetchFiles() {
@@ -277,39 +300,62 @@ export default function Avatar({ url, onUpload }) {
             <li key={file.name}>{file.name}</li>
           ))}
         </ul> */}
-        <div className="flex justify-center p-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {filteredFiles.map((file) => (
-              <div
-                key={file.name}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: "10px",
-                }}
-              >
-                <div className="grid grid-cols-1 gap-4">
-                  <img
-                    className="h-auto max-w-full rounded-lg"
+      </div>
+      <Grid
+        container
+        spacing={{ xs: 2, md: 1 }}
+        columns={{ xs: 4, sm: 8, md: 16 }}
+        sx={{ flexGrow: 1 }}
+      >
+        {filteredFiles.map((file) => (
+      
+           <Grid xs={2} sm={4} md={4} key={file.id}>
+            <Card sx={{ maxWidth: 345, m: 2 }}>
+           
+                {loading ? (
+                  <Skeleton
+                    sx={{ height: 190 }}
+                    animation="wave"
+                    variant="rectangular"
+                  />
+                ) : (
+                  <CardMedia
+                    component="img"
+                    height="140"
                     key={file.name}
-                    src={import.meta.env.VITE_IMAGES_URL + `${file.name}`}
+                    image={import.meta.env.VITE_IMAGES_URL + `${file.name}`}
                     alt={file.name}
                   />
+                )}
 
-                  <button
-                    type="button"
-                    className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                    // onClick={() => deleteImage(file.name)}
-                    onClick={() => handleDelete(file)}
-                  >
-                    ลบ
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+                <CardContentNoPadding>
+                  {loading ? (
+                    <>
+                      <Skeleton
+                        animation="wave"
+                        height={10}
+                        style={{ marginBottom: 3 }}
+                      />
+                      <Skeleton animation="wave" height={10} width="80%" />
+                    </>
+                  ) : (
+                    <div className="p-3 pb-1">
+                      <button
+                        type="button"
+                        className="ocus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-md px-20 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                        // onClick={() => deleteImage(file.name)}
+                        onClick={() => handleDelete(file)}
+                      >
+                        ลบ
+                      </button>
+                    </div>
+                  )}
+                </CardContentNoPadding>
+              </Card>
+              </Grid>
+        
+        ))}
+      </Grid>
 
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Delete Image</DialogTitle>
@@ -363,7 +409,8 @@ export default function Avatar({ url, onUpload }) {
 
         <Alert severity="error">
           <AlertTitle>เกิดข้อผิดพลาด</AlertTitle>
-          แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻 — <strong>กรุณาตรวจสอบ ID !</strong>
+          แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻 —{" "}
+          <strong>กรุณาตรวจสอบ ID !</strong>
         </Alert>
       </Snackbar>
     </div>

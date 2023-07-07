@@ -16,12 +16,22 @@ import { useNavigate } from 'react-router-dom';
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3000);
+  // }, []);
 
+  useEffect(() => {
+    if (data !== "") {
+      setTimeout(() => {
+        setLoading(false);
+      }, 3000);
+    } else {
+      setLoading(true);
+    }
+  }, [data]);
+  
   const navigate = useNavigate();
 
   const handleClick = (itemId) => {

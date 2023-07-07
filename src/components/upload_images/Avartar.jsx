@@ -11,6 +11,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 
 export default function Avatar({ url, onUpload }) {
@@ -24,6 +26,7 @@ export default function Avatar({ url, onUpload }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [showAlertFail, setShowAlertFail] = useState(false);
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -110,6 +113,7 @@ export default function Avatar({ url, onUpload }) {
   async function uploadAvatar(event) {
     try {
       setUploading(true);
+      setShowAlert(false);
 
       if (!event.target.files || event.target.files.length === 0) {
         throw new Error("You must select an image to upload.");
@@ -134,6 +138,7 @@ export default function Avatar({ url, onUpload }) {
       setFileName(""); // Clear the fileName input field
     } catch (error) {
       alert(error.message);
+      setShowAlertFail(true);
     } finally {
       setUploading(false);
       setShowAlert(true);
@@ -178,6 +183,10 @@ export default function Avatar({ url, onUpload }) {
   //Show alert for upload state success
   const handleAlertClose = () => {
     setShowAlert(false);
+  };
+
+  const handleAlertCloseFailed = () => {
+    setShowAlertFail(false);
   };
 
   return (
@@ -332,6 +341,30 @@ export default function Avatar({ url, onUpload }) {
         >
           เย้ 🥳 อัพโหลดไฟล์เสร็จแล้วค่ะ 🙏🏻
         </MuiAlert>
+      </Snackbar>
+
+      <Snackbar
+        open={showAlertFail}
+        autoHideDuration={5000} // Duration to show the alert in milliseconds (adjust as needed)
+        onClose={handleAlertCloseFailed}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        {/* <MuiAlert
+          onClose={handleAlertCloseFailed}
+          severity="success"
+          elevation={6}
+          variant="filled"
+        >
+          แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻
+        </MuiAlert> */}
+
+        <Alert severity="error">
+          <AlertTitle>เกิดข้อผิดพลาด</AlertTitle>
+          แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻 — <strong>กรุณาตรวจสอบ ID !</strong>
+        </Alert>
       </Snackbar>
     </div>
   );

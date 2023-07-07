@@ -16,13 +16,12 @@ import {
 } from "@mui/material";
 
 import { Skeleton } from "@mui/material";
-
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
+import { useNavigate } from 'react-router-dom';
 
 const CardContentNoPadding = styled(CardContent)(`
   padding: 0;
@@ -212,6 +211,11 @@ export default function Avatar({ url, onUpload }) {
     setShowAlertFail(false);
   };
 
+  const navigate = useNavigate();
+  const handleClick = (itemId) => {
+    navigate(`/FetchDetial/${itemId}`);
+  };
+
   return (
     <div>
       <div className="grid grid-cols-1 justify-center p-8 pt-0">
@@ -325,6 +329,8 @@ export default function Avatar({ url, onUpload }) {
                     key={file.name}
                     image={import.meta.env.VITE_IMAGES_URL + `${file.name}`}
                     alt={file.name}
+      
+                    onClick={() => handleClick(`${file.name}`.replace(/\.jpg/g, ""))}
                   />
                 )}
 

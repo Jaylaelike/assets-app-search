@@ -141,8 +141,8 @@ export default function Avatar({ url, onUpload }) {
       let { error: uploadError } = await supabase.storage
         .from("avatars")
         .upload(filePath, file, {
-          // cacheControl: "3600",
-          upsert: false
+          cacheControl: "3600",
+         // upsert: false
         });
 
       if (uploadError) {

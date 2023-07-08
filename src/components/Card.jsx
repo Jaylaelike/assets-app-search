@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
+  const timestamp = Date.now(); // Generate a unique timestamp
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -66,7 +67,7 @@ export const CardAssets = ({ data }) => {
                   <Avatar
                     alt="Ted talk"
                     src={
-                      import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg"
+                      import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg" + `?t=${timestamp}`
                     }
                   />
                 )
@@ -112,7 +113,7 @@ export const CardAssets = ({ data }) => {
               <CardMedia
                 component="img"
                 height="140"
-                image={import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg"}
+                image={import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg" + `?t=${timestamp}`}
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}
                 onClick={() => handleClick(item.No)}

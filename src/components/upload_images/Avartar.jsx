@@ -44,6 +44,8 @@ export default function Avatar({ url, onUpload }) {
   const [showAlertFail, setShowAlertFail] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const timestamp = Date.now(); // Generate a unique timestamp
+
   useEffect(() => {
     // if (url) downloadImage(url);
     fetchFiles();
@@ -150,7 +152,11 @@ export default function Avatar({ url, onUpload }) {
 
       let { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(filePath, file);
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: 'image/jpg',
+        });
 
       if (uploadError) {
         throw uploadError;
@@ -326,10 +332,9 @@ export default function Avatar({ url, onUpload }) {
                   <CardMedia
                     component="img"
                     height="140"
-                    key={file.name}
-                    image={import.meta.env.VITE_IMAGES_URL + `${file.name}`}
-                    alt={file.name}
-      
+                    // key={file.name}
+                    image={import.meta.env.VITE_IMAGES_URL + `${file.name}`+ `?t=${timestamp}`}
+                    // alt={file.name}
                     onClick={() => handleClick(`${file.name}`.replace(/\.jpg/g, ""))}
                   />
                 )}

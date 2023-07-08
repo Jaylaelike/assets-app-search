@@ -17,13 +17,14 @@ function FetchImage() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
+  const timestamp = Date.now(); // Generate a unique timestamp
 
   useEffect(() => {
     let abortController = new AbortController();
     const fetchImage = async () => {
       try {
         const response = await axios.get(
-          import.meta.env.VITE_IMAGES_URL + "/" + `${id}` + ".jpg",
+          import.meta.env.VITE_IMAGES_URL + "/" + `${id}` + ".jpg" + `?t=${timestamp}`,
           {
             responseType: "arraybuffer",
             signal: abortController.signal,

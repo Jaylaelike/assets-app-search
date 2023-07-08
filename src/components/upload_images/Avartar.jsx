@@ -23,6 +23,8 @@ import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
+import { decode } from 'base64-arraybuffer'
+
 const CardContentNoPadding = styled(CardContent)(`
   padding: 0;
   &:last-child {
@@ -140,7 +142,9 @@ export default function Avatar({ url, onUpload }) {
 
       let { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(filePath, file); 
+        .upload(filePath, file, decode('base64FileData'), {
+          contentType: 'image/png'
+        });
           //cacheControl: "3600",
          // upsert: false
         

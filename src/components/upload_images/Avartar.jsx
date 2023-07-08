@@ -237,9 +237,9 @@ export default function Avatar({ url, onUpload }) {
       </div>
 
       <div className="flex justify-center pt-2">
-        {/* <label className="button primary block" htmlFor="single">
+        <label className="button primary block" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
-        </label> */}
+        </label>
         Upload file
         <input
           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -249,13 +249,15 @@ export default function Avatar({ url, onUpload }) {
           onChange={uploadAvatar}
           disabled={uploading}
         ></input>
-        <button
+        {/* <button
           type="button"
           // onClick={}
           className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 "
         >
+          <p>
           {uploading ? "Uploading ..." : "Upload"}
-        </button>
+            </p>
+        </button> */}
       </div>
 
       <div className="flex justify-center p-8">

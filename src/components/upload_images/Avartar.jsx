@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState,  useRef  } from "react";
+import { useEffect, useState  } from "react";
 import { supabase } from "./supabaseClient";
 import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
 import { pink } from "@mui/material/colors";
@@ -44,7 +44,7 @@ export default function Avatar({ url, onUpload }) {
   const [showAlertFail, setShowAlertFail] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
-  const fileInputRef = useRef(null);
+
   const timestamp = Date.now(); // Generate a unique timestamp
 
   const stringValPatternValidation = (value) => {
@@ -62,8 +62,6 @@ export default function Avatar({ url, onUpload }) {
   // const handleSubmit = () => {
   //   console.log("Val: ", fileName);
   // };
-
-  //////////////////
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -163,10 +161,6 @@ export default function Avatar({ url, onUpload }) {
     }
   }
 
-  const handleButtonClick = () => {
-    fileInputRef.current.click();
-  };
-
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -253,12 +247,11 @@ export default function Avatar({ url, onUpload }) {
           type="file"
           accept="image/*"
           onChange={uploadAvatar}
-          ref={fileInputRef}
           disabled={uploading}
         ></input>
         <button
           type="button"
-          onClick={handleButtonClick}
+          // onClick={}
           className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 "
         >
           {uploading ? "Uploading ..." : "Upload"}

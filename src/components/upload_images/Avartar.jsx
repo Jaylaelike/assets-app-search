@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState } from "react";
+import { useEffect, useState,  useRef  } from "react";
 import { supabase } from "./supabaseClient";
 import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
 import { pink } from "@mui/material/colors";
@@ -21,7 +21,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const CardContentNoPadding = styled(CardContent)(`
   padding: 0;
@@ -43,8 +43,27 @@ export default function Avatar({ url, onUpload }) {
   const [showAlert, setShowAlert] = useState(false);
   const [showAlertFail, setShowAlertFail] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [isValid, setIsValid] = useState(false);
+  const fileInputRef = useRef(null);
   const timestamp = Date.now(); // Generate a unique timestamp
+
+  const stringValPatternValidation = (value) => {
+    return /\s/g.test(value);
+  };
+
+  const handleChangeStringVal = (event) => {
+    const { value } = event.target;
+    const isValid = stringValPatternValidation(value);
+    setFileName(value);
+    setIsValid(isValid);
+    console.log(stringValPatternValidation(value));
+  };
+
+  // const handleSubmit = () => {
+  //   console.log("Val: ", fileName);
+  // };
+
+  //////////////////
 
   useEffect(() => {
     // if (url) downloadImage(url);
@@ -105,35 +124,6 @@ export default function Avatar({ url, onUpload }) {
     }
   }
 
-  // async function deleteImage(fileName) {
-  //   try {
-  //     await supabase.storage.from("avatars").remove([fileName]);
-
-  //     // Remove the deleted file from the state
-  //     setFiles(files.filter((file) => file.name !== fileName));
-  //   } catch (error) {
-  //     console.error("Error deleting file:", error.message);
-  //   } finally {
-  //     fetchFiles();
-  //   }
-  // }
-
-  // async function downloadImage(path) {
-  //   try {
-  //     const { data, error } = await supabase.storage
-  //       .from("avatars")
-  //       .list("")
-  //       .download(path);
-  //     if (error) {
-  //       throw error;
-  //     }
-  //     const url = URL.createObjectURL(data);
-  //     setAvatarUrl(url);
-  //   } catch (error) {
-  //     console.log("Error downloading image: ", error.message);
-  //   }
-  // }
-
   async function uploadAvatar(event) {
     try {
       setUploading(true);
@@ -155,7 +145,7 @@ export default function Avatar({ url, onUpload }) {
         .upload(filePath, file, {
           cacheControl: "3600",
           upsert: false,
-          contentType: 'image/jpg',
+          contentType: "image/jpg",
         });
 
       if (uploadError) {
@@ -172,6 +162,11 @@ export default function Avatar({ url, onUpload }) {
       setShowAlert(true);
     }
   }
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
+  };
+
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -233,42 +228,24 @@ export default function Avatar({ url, onUpload }) {
             type="search"
             id="default-search"
             value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
+            onChange={handleChangeStringVal}
             className="block  p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
             required
           ></input>
+            {isValid && (
+            <div style={{ color: "#F61C04" }}>
+              มีช่องว่างระหว่างตัวอักษรโปรดตรวจสอบด้วยค่ะ
+            </div>
+          )}
         </div>
-        <div className="flex justify-center pt-10 gap-3">
-          <div>
-            <label> ค้นหา </label>
-          </div>
-
-          <div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="ป้อน ID ที่คุณค้นหา"
-              value={searchTerm}
-              onChange={handleSearch}
-            ></input>
-
-            {filteredFiles?.length === 0 ? (
-              <div className="flex justify-center pt-8 gap-3">
-                <p> {`ไม่พบรูปภาพที่ค้นหา "${searchTerm}"`}</p>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
+        
       </div>
 
       <div className="flex justify-center pt-2">
-        <label className="button primary block" htmlFor="single">
+        {/* <label className="button primary block" htmlFor="single">
           {uploading ? "Uploading ..." : "Upload"}
-        </label>
+        </label> */}
         Upload file
         <input
           className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
@@ -276,8 +253,16 @@ export default function Avatar({ url, onUpload }) {
           type="file"
           accept="image/*"
           onChange={uploadAvatar}
+          ref={fileInputRef}
           disabled={uploading}
         ></input>
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 "
+        >
+          {uploading ? "Uploading ..." : "Upload"}
+        </button>
       </div>
 
       <div className="flex justify-center p-8">
@@ -311,6 +296,32 @@ export default function Avatar({ url, onUpload }) {
           ))}
         </ul> */}
       </div>
+
+      <div className="flex justify-center pt-10 gap-3 pb-5">
+          <div>
+            <label> ค้นหา </label>
+          </div>
+
+          <div>
+            <input
+              type="search"
+              id="default-search"
+              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="ป้อน ID ที่คุณค้นหา"
+              value={searchTerm}
+              onChange={handleSearch}
+            ></input>
+
+            {filteredFiles?.length === 0 ? (
+              <div className="flex justify-center pt-8 gap-3">
+                <p> {`ไม่พบรูปภาพที่ค้นหา "${searchTerm}"`}</p>
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
+        </div>
+
       <Grid
         container
         spacing={{ xs: 2, md: 1 }}
@@ -318,53 +329,56 @@ export default function Avatar({ url, onUpload }) {
         sx={{ flexGrow: 1 }}
       >
         {filteredFiles.map((file) => (
-      
-           <Grid xs={2} sm={4} md={4} key={file.id}>
+          <Grid xs={2} sm={4} md={4} key={file.id}>
             <Card sx={{ maxWidth: 345, m: 2 }}>
-           
-                {loading ? (
-                  <Skeleton
-                    sx={{ height: 190 }}
-                    animation="wave"
-                    variant="rectangular"
-                  />
-                ) : (
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    // key={file.name}
-                    image={import.meta.env.VITE_IMAGES_URL + `${file.name}`+ `?t=${timestamp}`}
-                    // alt={file.name}
-                    onClick={() => handleClick(`${file.name}`.replace(/\.jpg/g, ""))}
-                  />
-                )}
+              {loading ? (
+                <Skeleton
+                  sx={{ height: 190 }}
+                  animation="wave"
+                  variant="rectangular"
+                />
+              ) : (
+                <CardMedia
+                  component="img"
+                  height="140"
+                  key={file.name}
+                  image={
+                    import.meta.env.VITE_IMAGES_URL +
+                    `${file.name}` +
+                    `?t=${timestamp}`
+                  }
+                  alt={file.name}
+                  onClick={() =>
+                    handleClick(`${file.name}`.replace(/\.jpg/g, ""))
+                  }
+                />
+              )}
 
-                <CardContentNoPadding>
-                  {loading ? (
-                    <>
-                      <Skeleton
-                        animation="wave"
-                        height={10}
-                        style={{ marginBottom: 3 }}
-                      />
-                      <Skeleton animation="wave" height={10} width="80%" />
-                    </>
-                  ) : (
-                    <div className="p-3 pb-1">
-                      <button
-                        type="button"
-                        className="ocus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-md px-20 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
-                        // onClick={() => deleteImage(file.name)}
-                        onClick={() => handleDelete(file)}
-                      >
-                        ลบ
-                      </button>
-                    </div>
-                  )}
-                </CardContentNoPadding>
-              </Card>
-              </Grid>
-        
+              <CardContentNoPadding>
+                {loading ? (
+                  <>
+                    <Skeleton
+                      animation="wave"
+                      height={10}
+                      style={{ marginBottom: 3 }}
+                    />
+                    <Skeleton animation="wave" height={10} width="80%" />
+                  </>
+                ) : (
+                  <div className="p-3 pb-1">
+                    <button
+                      type="button"
+                      className="ocus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-md px-20 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                      // onClick={() => deleteImage(file.name)}
+                      onClick={() => handleDelete(file)}
+                    >
+                      ลบ
+                    </button>
+                  </div>
+                )}
+              </CardContentNoPadding>
+            </Card>
+          </Grid>
         ))}
       </Grid>
 
@@ -409,15 +423,6 @@ export default function Avatar({ url, onUpload }) {
           horizontal: "right",
         }}
       >
-        {/* <MuiAlert
-          onClose={handleAlertCloseFailed}
-          severity="success"
-          elevation={6}
-          variant="filled"
-        >
-          แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻
-        </MuiAlert> */}
-
         <Alert severity="error">
           <AlertTitle>เกิดข้อผิดพลาด</AlertTitle>
           แย่จัง!! เกิดข้อผิดพลาดในการอัพโหลดไฟล์ 🙏🏻 —{" "}

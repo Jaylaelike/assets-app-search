@@ -3,7 +3,6 @@ import axios from "axios";
 import CardAssets from "./Card";
 import SearchIcon from "@mui/icons-material/Search";
 import { blueGrey } from "@mui/material/colors";
-
 function Home() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
@@ -59,10 +58,7 @@ function Home() {
               <div className="grid grid-cols-1 gap-4 p-20">
                 <p> {`ไม่พบข้อมูลทรัพย์สินในระบบ "${searchTerm}"`}</p>
                 <div>
-                  <img
-                    src="https://shorturl.at/amzR7"
-                    alt="sorry"
-                  />
+                  <img src="https://shorturl.at/amzR7" alt="sorry" />
                 </div>
               </div>
             </div>
@@ -72,13 +68,9 @@ function Home() {
         </div>
         <SearchIcon sx={{ fontSize: 40, color: blueGrey[500] }} />
       </div>
-      {/* <input
-        className="search"
-        placeholder="Search..."
-        onChange={(e) => setQuery(e.target.value.toLowerCase())}
-      /> */}
 
       <CardAssets data={data} query={query} />
+
     </div>
   );
 }

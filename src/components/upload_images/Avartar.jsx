@@ -49,7 +49,7 @@ export default function Avatar({ url, onUpload }) {
   const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
 
-  const timestamp = Date.now(); // Generate a unique timestamp
+ // const timestamp = Date.now(); // Generate a unique timestamp
 
   const stringValPatternValidation = (value) => {
     return /\s/g.test(value);
@@ -60,7 +60,7 @@ export default function Avatar({ url, onUpload }) {
     const isValid = stringValPatternValidation(value);
     setFileName(value);
     setIsValid(isValid);
-    console.log(stringValPatternValidation(value));
+    //console.log(stringValPatternValidation(value));
   };
 
   // const handleSubmit = () => {
@@ -93,7 +93,7 @@ export default function Avatar({ url, onUpload }) {
         const newData = [...data];
         newData.pop();
         setFiles(newData);
-        console.log(data);
+        //console.log(data);
 
         setFileCount(((newData.length / 6057) * 100).toFixed(2));
       } catch (error) {
@@ -344,8 +344,7 @@ export default function Avatar({ url, onUpload }) {
                   key={file.name}
                   image={
                     import.meta.env.VITE_IMAGES_URL +
-                    `${file.name}` +
-                    `?t=${timestamp}`
+                    `${file.name}`
                   }
                   alt={file.name}
                   onClick={() =>

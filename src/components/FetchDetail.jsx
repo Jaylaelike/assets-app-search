@@ -3,10 +3,16 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReactLoading from "react-loading";
 import FetchImage from "./FetchImages";
+import { useNavigate } from "react-router-dom";
 
 function FetchDetial() {
   const { id } = useParams();
   const [data, setData] = useState([]);
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/");
+  };
 
   useEffect(() => {
     let abortController = new AbortController();
@@ -20,7 +26,7 @@ function FetchDetial() {
           }
         ); // Replace with your API endpoint
         setData(response.data);
-        console.log(response.data);
+        //console.log(response.data);
       } catch (error) {
         console.log("Error is :", error);
       }
@@ -32,8 +38,34 @@ function FetchDetial() {
   return (
     <>
       <section className="bg-gradient-to-r from-blue-500 from-10% via-green-00 via-30% to-pink-500 to-90%">
+        <div className="flex justify-items-start pl-5 grid">
+          <button
+            type="button"
+            onClick={handleClick}
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            <svg
+              className="w-6 h-6 text-gray-800 dark:text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 14 10"
+            >
+              <path
+                stroke="currentColor"
+                
+                d="M13 5H1m0 0 4 4M1 5l4-4"
+              />
+            </svg>
+            <span className="sr-only">Icon description</span>
+          </button>
+          <div className="text-xl text-gray-500 dark:text-white ">
+          <p>Back to Home</p>
+          </div>
+          
+        </div>
         <div className="flex items-center justify-center pt-4">
-          <div className=" justify-items-center pt-6 max-w-6xl bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+          <div className=" justify-items-center max-w-6xl bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
             {data?.length === 0 ? (
               <div className="justify-items-center">
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -48,7 +80,7 @@ function FetchDetial() {
               </div>
             ) : (
               <div className="justify-items-center">
-                 <FetchImage />
+                <FetchImage />
                 <div className="relative overflow-x-auto">
                   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -299,7 +331,6 @@ function FetchDetial() {
                     </tbody>
                   </table>
                 </div>
-               
               </div>
             )}
           </div>

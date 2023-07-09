@@ -56,9 +56,9 @@ function Home() {
           {data?.length === 0 ? (
             <div className="grid grid-cols-1 gap-4">
               <div className="grid grid-cols-1 gap-4 p-20">
-                <p> {`ไม่พบข้อมูลทรัพย์สินในระบบ "${searchTerm}"`}</p>
+                <p> {`ขออภัยค่ะไม่พบข้อมูลทรัพย์สิน "${searchTerm}"`}</p>
                 <div>
-                  <img src="https://shorturl.at/amzR7" alt="sorry" />
+                  <img src="https://res.cloudinary.com/satjay/image/upload/f_auto,q_auto/v1/assets/Sorry_icon" alt="sorry" />
                 </div>
               </div>
             </div>

@@ -8,10 +8,7 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Grid from "@mui/material/Grid";
-import { useNavigate } from 'react-router-dom';
-
-
-
+import { useNavigate } from "react-router-dom";
 
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
@@ -32,7 +29,7 @@ export const CardAssets = ({ data }) => {
       setLoading(true);
     }
   }, [data]);
-  
+
   const navigate = useNavigate();
 
   const handleClick = (itemId) => {
@@ -40,9 +37,8 @@ export const CardAssets = ({ data }) => {
   };
 
   // const navigate = useNavigate();
-  
-  //console.log(`data is : ${data.map(item => item.No )}`);
 
+  //console.log(`data is : ${data.map(item => item.No )}`);
 
   return (
     <Grid
@@ -66,9 +62,16 @@ export const CardAssets = ({ data }) => {
                 ) : (
                   <Avatar
                     alt="Ted talk"
+                    key={item.id}
                     src={
-                      import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg" + `?t=${timestamp}`
+                      import.meta.env.VITE_IMAGES_URL +
+                      `${item.No}` +
+                      ".jpg" +
+                      `?t=${timestamp}`
                     }
+                    onError={(e) => {
+                      e.target.src = "https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp";
+                    }}
                   />
                 )
               }
@@ -113,10 +116,18 @@ export const CardAssets = ({ data }) => {
               <CardMedia
                 component="img"
                 height="140"
-                image={import.meta.env.VITE_IMAGES_URL + `${item.No}` + ".jpg" + `?t=${timestamp}`}
+                image={
+                  import.meta.env.VITE_IMAGES_URL +
+                  `${item.No}` +
+                  ".jpg" +
+                  `?t=${timestamp}`
+                }
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}
                 onClick={() => handleClick(item.No)}
+                onError={(e) => {
+                  e.target.src = "https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp";
+                }}
               />
             )}
 

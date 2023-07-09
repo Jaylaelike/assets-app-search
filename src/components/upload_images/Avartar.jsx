@@ -149,8 +149,6 @@ export default function Avatar({ url, onUpload }) {
           cacheControl: '3600',
           upsert: false
         });
-      //cacheControl: "3600",
-      // upsert: false
 
       if (uploadError) {
         throw uploadError;

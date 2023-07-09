@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
-  //const timestamp = Date.now(); // Generate a unique timestamp
+  const timestamp = Date.now(); // Generate a unique timestamp
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -118,7 +118,7 @@ export const CardAssets = ({ data }) => {
                 image={
                   import.meta.env.VITE_IMAGES_URL +
                   `${item.No}` +
-                  ".jpg"
+                  ".jpg" + `?m=${timestamp}`
                 }
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}

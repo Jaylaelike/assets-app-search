@@ -9,7 +9,6 @@ export default function Account({ session }) {
   const [website, setWebsite] = useState(null);
   const [avatar_url, setAvatarUrl] = useState(null);
 
-
   useEffect(() => {
     async function getProfile() {
       setLoading(true);
@@ -58,34 +57,29 @@ export default function Account({ session }) {
   }
 
   return (
-<>
+    <>
+      <form onSubmit={updateProfile} className="form-widget">
+        <div className="form-widget">
+          <Avartar
+            url={avatar_url}
+            size={150}
+            onUpload={(event, url) => {
+              setAvatarUrl(url);
+              updateProfile(event);
+            }}
+          />
+        </div>
 
-
-    <form onSubmit={updateProfile} className="form-widget">
-      <div className="form-widget">
-        <Avartar
-          url={avatar_url}
-          size={150}
-          onUpload={(event, url) => {
-            setAvatarUrl(url);
-            updateProfile(event);
-          }}
-        />
-        
-      </div>
-
-
-
-      {/* <div>
-        <button
-          className="button block primary"
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Loading ..." : "Update"}
-        </button>
-      </div> */}
-    </form>
+        <div>
+          <button
+            className="button block primary"
+            type="submit"
+            disabled={loading}
+          >
+            {loading ? "Loading ..." : "Update"}
+          </button>
+        </div>
+      </form>
     </>
   );
 }

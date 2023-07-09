@@ -146,6 +146,8 @@ export default function Avatar({ url, onUpload }) {
         .from("avatars")
         .upload(filePath, file, decode("base64FileData"), {
           contentType: "image/png",
+          cacheControl: '3600',
+          upsert: false
         });
       //cacheControl: "3600",
       // upsert: false

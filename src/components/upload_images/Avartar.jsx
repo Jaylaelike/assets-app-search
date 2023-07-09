@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useState  } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 import PhotoCameraBackRoundedIcon from "@mui/icons-material/PhotoCameraBackRounded";
 import { pink } from "@mui/material/colors";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+
 import {
   Button,
   Dialog,
@@ -13,6 +14,7 @@ import {
   DialogActions,
   Alert,
   AlertTitle,
+  LinearProgress,
 } from "@mui/material";
 
 import { Skeleton } from "@mui/material";
@@ -23,7 +25,7 @@ import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
-import { decode } from 'base64-arraybuffer'
+import { decode } from "base64-arraybuffer";
 
 const CardContentNoPadding = styled(CardContent)(`
   padding: 0;
@@ -142,12 +144,11 @@ export default function Avatar({ url, onUpload }) {
 
       let { error: uploadError } = await supabase.storage
         .from("avatars")
-        .upload(filePath, file, decode('base64FileData'), {
-          contentType: 'image/png'
+        .upload(filePath, file, decode("base64FileData"), {
+          contentType: "image/png",
         });
-          //cacheControl: "3600",
-         // upsert: false
-        
+      //cacheControl: "3600",
+      // upsert: false
 
       if (uploadError) {
         throw uploadError;
@@ -163,7 +164,6 @@ export default function Avatar({ url, onUpload }) {
       setShowAlert(true);
     }
   }
-
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -221,22 +221,24 @@ export default function Avatar({ url, onUpload }) {
           <div>
             <label> ID </label>
           </div>
-          <input
-            type="search"
-            id="default-search"
-            value={fileName}
-            onChange={handleChangeStringVal}
-            className="block  p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
-            required
-          ></input>
+          <div className="grid grid-cols-1 justify-center">
+            <input
+              type="search"
+              id="default-search"
+              value={fileName}
+              onChange={handleChangeStringVal}
+              className="block  p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="กรอกเลข ID ให้ตรงกับอุปกรณ์"
+              required
+            ></input>
+
             {isValid && (
-            <div style={{ color: "#F61C04" }}>
-              มีช่องว่างระหว่างตัวอักษรโปรดตรวจสอบด้วยค่ะ
-            </div>
-          )}
+              <div className="p-6" style={{ color: "#F61C04" }}>
+                มีช่องว่างระหว่างตัวอักษรโปรดตรวจสอบด้วยค่ะ
+              </div>
+            )}
+          </div>
         </div>
-        
       </div>
 
       <div className="flex justify-center pt-2">
@@ -296,29 +298,29 @@ export default function Avatar({ url, onUpload }) {
       </div>
 
       <div className="flex justify-center pt-10 gap-3 pb-5">
-          <div>
-            <label> ค้นหา </label>
-          </div>
-
-          <div>
-            <input
-              type="search"
-              id="default-search"
-              className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="ป้อน ID ที่คุณค้นหา"
-              value={searchTerm}
-              onChange={handleSearch}
-            ></input>
-
-            {filteredFiles?.length === 0 ? (
-              <div className="flex justify-center pt-8 gap-3">
-                <p> {`ไม่พบรูปภาพที่ค้นหา "${searchTerm}"`}</p>
-              </div>
-            ) : (
-              <></>
-            )}
-          </div>
+        <div>
+          <label> ค้นหา </label>
         </div>
+
+        <div>
+          <input
+            type="search"
+            id="default-search"
+            className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="ป้อน ID ที่คุณค้นหา"
+            value={searchTerm}
+            onChange={handleSearch}
+          ></input>
+
+          {filteredFiles?.length === 0 ? (
+            <div className="flex justify-center pt-8 gap-3">
+              <p> {`ไม่พบรูปภาพที่ค้นหา "${searchTerm}"`}</p>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
 
       <Grid
         container
@@ -391,6 +393,13 @@ export default function Avatar({ url, onUpload }) {
             Cancel
           </Button>
         </DialogActions>
+      </Dialog>
+
+      <Dialog open={uploading} onClose={uploading === false}>
+        <DialogTitle>กำลังโหลดรูปภาพ...</DialogTitle>
+        <DialogContent>
+          <LinearProgress />
+        </DialogContent>
       </Dialog>
 
       <Snackbar

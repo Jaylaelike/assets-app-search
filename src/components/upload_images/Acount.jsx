@@ -76,7 +76,7 @@ export default function Account({ session }) {
 
 
 
-      <div>
+      {/* <div>
         <button
           className="button block primary"
           type="submit"
@@ -84,7 +84,7 @@ export default function Account({ session }) {
         >
           {loading ? "Loading ..." : "Update"}
         </button>
-      </div>
+      </div> */}
     </form>
     </>
   );

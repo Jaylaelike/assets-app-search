@@ -118,7 +118,7 @@ export const CardAssets = ({ data }) => {
                 image={
                   import.meta.env.VITE_IMAGES_URL +
                   `${item.No}` +
-                  ".jpg" + `?m=${timestamp}`
+                  ".jpg" + `?t=${timestamp}`
                 }
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}

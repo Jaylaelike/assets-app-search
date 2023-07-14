@@ -117,7 +117,7 @@ export const CardAssets = ({ data }) => {
                 component="img"
                 height="140"
                 image={
-                  import.meta.env.VITE_IMAGES_URL + `${item.No}` + '.jpg' + `?dummy=${Math.random()}`
+                  import.meta.env.VITE_IMAGES_URL + `${item.No}` + '.jpg'
                 }
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}

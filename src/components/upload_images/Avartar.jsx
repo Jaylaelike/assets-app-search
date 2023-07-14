@@ -344,7 +344,7 @@ export default function Avatar({ url, onUpload }) {
                   key={file.name}
                   image={
                     import.meta.env.VITE_IMAGES_URL +
-                    `${file.name}` + `?dummy=${Math.random()}`
+                    `${file.name}`
                   }
                   alt={file.name}
                   onClick={() =>

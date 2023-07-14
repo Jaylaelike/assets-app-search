@@ -49,7 +49,7 @@ export default function Avatar({ url, onUpload }) {
   const [loading, setLoading] = useState(true);
   const [isValid, setIsValid] = useState(false);
 
-  const timestamp = Date.now(); // Generate a unique timestamp
+  // const timestamp = Date.now(); // Generate a unique timestamp
 
   const stringValPatternValidation = (value) => {
     return /\s/g.test(value);
@@ -344,7 +344,7 @@ export default function Avatar({ url, onUpload }) {
                   key={file.name}
                   image={
                     import.meta.env.VITE_IMAGES_URL +
-                    `${file.name}` + `?t=${timestamp}`
+                    `${file.name}` + `?dummy=${Math.random()}`
                   }
                   alt={file.name}
                   onClick={() =>

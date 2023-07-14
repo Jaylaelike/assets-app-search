@@ -10,6 +10,7 @@ function App() {
       <ResponsiveAppBar />
         <Routes>
           <Route path="/" element={<Home />} ></Route>
+          <Route path="Home" element={<Home />} ></Route>
           <Route path="Products" element={<Products />}></Route>
           <Route path="Images" element={<Products />}></Route>
           <Route path="/FetchDetial/:id" element={<FetchDetial />}/>

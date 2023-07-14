@@ -83,7 +83,7 @@ export default function Avatar({ url, onUpload }) {
       try {
         setUploading(true);
         const { data } = await supabase.storage.from("avatars").list("", {
-          limit: 200,
+          limit: 500,
           offset: 0,
           sortBy: { column: "created_at", order: "desc" },
         });
@@ -109,7 +109,7 @@ export default function Avatar({ url, onUpload }) {
   async function fetchFiles() {
     try {
       const { data } = await supabase.storage.from("avatars").list("", {
-        limit: 200,
+        limit: 500,
         offset: 0,
         sortBy: { column: "created_at", order: "desc" },
       });

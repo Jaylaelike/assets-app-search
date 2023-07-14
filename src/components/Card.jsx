@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
   const timestamp = Date.now(); // Generate a unique timestamp
-
+ 
   // useEffect(() => {
   //   setTimeout(() => {
   //     setLoading(false);
@@ -35,6 +35,7 @@ export const CardAssets = ({ data }) => {
   const handleClick = (itemId) => {
     navigate(`/FetchDetial/${itemId}`);
   };
+
 
   // const navigate = useNavigate();
 
@@ -66,7 +67,7 @@ export const CardAssets = ({ data }) => {
                     src={
                       import.meta.env.VITE_IMAGES_URL +
                       `${item.No}` +
-                      ".jpg"
+                      ".jpg" + `?t=${timestamp}`
                     }
                     onError={(e) => {
                       e.target.src = "https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp";
@@ -116,9 +117,7 @@ export const CardAssets = ({ data }) => {
                 component="img"
                 height="140"
                 image={
-                  import.meta.env.VITE_IMAGES_URL +
-                  `${item.No}` +
-                  ".jpg" + `?t=${timestamp}`
+                  import.meta.env.VITE_IMAGES_URL + `${item.No}` + '.jpg' + `?t=${timestamp}`
                 }
                 alt="Nicola Sturgeon on a TED talk stage"
                 key={item.id}

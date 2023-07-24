@@ -16,18 +16,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import Avatar from "@mui/material/Avatar";
-import { supabase } from "../components/upload_images/supabaseClient";
-import Menu from "@mui/material/Menu";
+
 
 
 import { Link } from "react-router-dom";
 
 
 const pages = ["Home", "Images"];
-const settings = ["Logout"];
+//const settings = ["Logout"];
 
 
 const drawerWidth = 240;

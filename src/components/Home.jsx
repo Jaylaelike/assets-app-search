@@ -3,6 +3,7 @@ import axios from "axios";
 import CardAssets from "./Card";
 import SearchIcon from "@mui/icons-material/Search";
 import { blueGrey } from "@mui/material/colors";
+
 function Home() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);

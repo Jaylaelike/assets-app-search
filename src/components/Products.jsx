@@ -1,7 +1,9 @@
-import HomeUploadImages from "./upload_images/Home";
+import UploadImages from "./UploadImages";
+//import HomeUploadImages from "./upload_images/Home";
 
 function Products() {
-  return <HomeUploadImages />;
+  return <UploadImages />;
+ // return <HomeUploadImages />;
 }
 
 export default Products;

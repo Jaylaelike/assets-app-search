@@ -67,9 +67,11 @@ function Home() {
 
   return (
     <div>
-      <div className="flex justify-center p-5 gap-3">
-        <div>
-          <input
+
+      <div className="flex justify-center items-center">
+      <div className="grid grid-cols-1 gap-5">
+        <div className="flex justify-center items-center">
+        <input
             type="search"
             id="default-search"
             className="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -77,10 +79,16 @@ function Home() {
             value={searchTerm}
             onChange={handleSearch}
           ></input>
+          <SearchIcon sx={{ fontSize: 40, color: blueGrey[500] }} />
+
+        </div>
+          
+  
+          
 
           {data?.length === 0 ? (
             <div className="grid grid-cols-1 gap-4">
-              <div className="grid grid-cols-1 gap-4 p-20">
+              <div className="grid grid-cols-1 gap-4 p-10">
                 <p> {`ขออภัยค่ะไม่พบข้อมูลทรัพย์สิน "${searchTerm}"`}</p>
                 <div>
                   <img src="https://res.cloudinary.com/satjay/image/upload/f_auto,q_auto/v1/assets/Sorry_icon" alt="sorry" />
@@ -90,11 +98,18 @@ function Home() {
           ) : (
             <></>
           )}
-        </div>
+         
+         
+
+        <div className="grid grid-cols-1 justify-center gap-2">
         <StationList onOptionSelected={handleOptionSelected} onClear={handleClear} />
-        {selectedValue && <p>Selected Value: {selectedValue}</p>}
-        <SearchIcon sx={{ fontSize: 40, color: blueGrey[500] }} />
+        </div>
+      
+  
+     </div>
       </div>
+
+ 
 
       <CardAssets data={data} query={query} />
 

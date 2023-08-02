@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Buffer } from "buffer";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import ReactLoading from "react-loading";
@@ -17,25 +16,25 @@ function FetchImage() {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(!open);
-  const timestamp = Date.now(); // Generate a unique timestamp
 
   useEffect(() => {
     let abortController = new AbortController();
     const fetchImage = async () => {
       try {
         const response = await axios.get(
-          import.meta.env.VITE_IMAGES_URL + "/" + `${id}` + ".jpg" + `?t=${timestamp}`,
-          {
-            responseType: "arraybuffer",
-            signal: abortController.signal,
-          }
+          import.meta.env.VITE_IMAGES_URL_V2 + `${id}`,
+          // {
+          //   responseType: "arraybuffer",
+          //   signal: abortController.signal,
+          // }
         );
-        const base64Image = Buffer.from(response.data, "binary").toString(
-          "base64"
-        );
-        const dataURL = `data:${response.headers["content-type"]};base64,${base64Image}`;
+        // const base64Image = Buffer.from(response.data.image_url, "binary").toString(
+        //   "base64"
+        // );
+        // const dataURL = `data:${response.headers["content-type"]};base64,${base64Image}`;
+        const dataURL = response.data[0].image_url;
         setData(dataURL);
-       // console.log(data);
+        console.log(data);
       } catch (error) {
         console.error("Error fetching image:", error);
       }

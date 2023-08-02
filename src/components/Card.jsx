@@ -12,13 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 export const CardAssets = ({ data }) => {
   const [loading, setLoading] = useState(true);
-  // const timestamp = Date.now(); // Generate a unique timestamp
- 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 3000);
-  // }, []);
+  const MOCKUP_IMAGE_URL = 'https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp';
 
   useEffect(() => {
     if (data !== "") {
@@ -49,7 +43,7 @@ export const CardAssets = ({ data }) => {
       sx={{ flexGrow: 1 }}
     >
       {data.map((item) => (
-        <Grid xs={2} sm={4} md={4} key={item.id}>
+        <Grid xs={2} sm={4} md={4} key={item.No}>
           <Card sx={{ maxWidth: 345, m: 2 }}>
             <CardHeader
               avatar={
@@ -65,13 +59,8 @@ export const CardAssets = ({ data }) => {
                     alt="Ted talk"
                     key={item.id}
                     src={
-                      import.meta.env.VITE_IMAGES_URL +
-                      `${item.No}` +
-                      ".jpg" + `?dummy=${Math.random()}`
+                      item.image_url || MOCKUP_IMAGE_URL
                     }
-                    onError={(e) => {
-                      e.target.src = "https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp";
-                    }}
                   />
                 )
               }
@@ -117,14 +106,11 @@ export const CardAssets = ({ data }) => {
                 component="img"
                 height="140"
                 image={
-                  import.meta.env.VITE_IMAGES_URL + `${item.No}` + '.jpg'
+                  item.image_url || MOCKUP_IMAGE_URL
                 }
                 alt="Nicola Sturgeon on a TED talk stage"
-                key={item.id}
+                key={item.No}
                 onClick={() => handleClick(item.No)}
-                onError={(e) => {
-                  e.target.src = "https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp";
-                }}
               />
             )}
 

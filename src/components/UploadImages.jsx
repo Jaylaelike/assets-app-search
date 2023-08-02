@@ -212,7 +212,7 @@ const UploadImages = () => {
   const handleUpload = async () => {
 
     if (!newImage || newImage === 0) {
-      alert("คุณลืมเลือกรูปภาพ!!!");
+      alert("กรุณาใส่รูปภาพ!!!");
     }
     // if (!newImage.value) {
     //   alert("โปรดใส่ ID ของอุปกรณ์ด้วยค่ะ.");
@@ -226,10 +226,6 @@ const UploadImages = () => {
     try {
       setShowAlert(false)
       setUploading(true)
-      if (isDataAlreadyExists()) {
-        alert('Data already exists, cannot post duplicate data.');
-      } else 
-      {
 
       // Get the image URL from Supabase after uploading
       const imageUrl = CDNURL + fileName;
@@ -252,10 +248,11 @@ const UploadImages = () => {
       setNewImage(null);
       setShowAlert(true)
       fetchData();
-      }
+      
     } catch (error) {
       setShowAlertFail(true);
       console.error("Error uploading image:", error);
+      alert(`ขออภัยค่ะ ID: ${selectedImageId} มีรูปภาพอยู่แล้ว`);
     } finally {
       setUploading(false)
       fetchFilesCount();
@@ -378,10 +375,10 @@ const UploadImages = () => {
     setSearchId(id.toString());
   };
 
-  const isDataAlreadyExists = () => {
-    return images.find((item) => item.id.toString().includes(selectedImageId));
-  };
-
+  // const isDataAlreadyExists = () => {
+  //   return images.find((item) => item.id.toString().includes(selectedImageId));
+  // };
+ 
   const handleAlertClose = () => {
     setShowAlert(false);
   };

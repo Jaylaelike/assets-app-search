@@ -20,13 +20,13 @@ function FetchDetial() {
       try {
         const response = await axios.get(
           // `http://192.168.1.198:4000/api/assets/${id}`,
-          import.meta.env.VITE_ASSETS_URL + "/" + `${id}`,
+          import.meta.env.VITE_IMAGES_URL_V2 + `${id}`,
           {
             signal: abortController.signal,
           }
         ); // Replace with your API endpoint
         setData(response.data);
-        //console.log(response.data);
+        console.log(response.data);
       } catch (error) {
         console.log("Error is :", error);
       }

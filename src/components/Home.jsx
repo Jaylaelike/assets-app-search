@@ -3,42 +3,66 @@ import axios from "axios";
 import CardAssets from "./Card";
 import SearchIcon from "@mui/icons-material/Search";
 import { blueGrey } from "@mui/material/colors";
+import StationList from "./StationList";
 
 function Home() {
   const [query, setQuery] = useState("");
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedValue, setSelectedValue] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       // Check if the query is null or has more than 2 characters
       if (query === null || query.length > 2) {
         const res = await axios.get(
-          import.meta.env.VITE_ASSETS_QUERY_URL + `${query}`
+          import.meta.env.VITE_ASSETS_QUERY_URL_V2 + `${query}`
         );
         setData(res.data);
-      } else {
+      } 
+      else {
         // If the query is null or less than 3 characters, fetch data from another API
-        const anotherRes = await axios.get(import.meta.env.VITE_ASSETS_URL);
+        const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
         setData(anotherRes.data);
       }
     };
 
-    // const fetchData = async () => {
-    //   const res = await axios.get(
-    //     `http://192.168.1.198:4000/search?keyword=${query}`
-    // //   );
-    //   setData(res.data);
-    // };
+    if (query.length === 0 || query.length > 2) 
+    fetchData();
 
-    if (query.length === 0 || query.length > 2) fetchData();
   }, [query]);
+
+  useEffect(() => {
+    const fetchStation = async () => {
+      if (selectedValue) {
+        const res = await axios.get(
+          import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
+       );
+        setData(res.data);
+      } else {
+        const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
+      setData(anotherRes.data);
+      }      
+    };
+    fetchStation();  
+    
+  }, [selectedValue]);
 
   // console.log(query);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event,value) => {
     setSearchTerm(event.target.value);
     setQuery(event.target.value.toLowerCase());
+    setSelectedValue(value);
+  };
+
+  const handleOptionSelected = (value) => {
+    setSelectedValue(value);
+    console.log(selectedValue);
+  };
+
+  const handleClear = () => {
+    setSelectedValue(null);
   };
 
   return (
@@ -67,6 +91,8 @@ function Home() {
             <></>
           )}
         </div>
+        <StationList onOptionSelected={handleOptionSelected} onClear={handleClear} />
+        {selectedValue && <p>Selected Value: {selectedValue}</p>}
         <SearchIcon sx={{ fontSize: 40, color: blueGrey[500] }} />
       </div>
 

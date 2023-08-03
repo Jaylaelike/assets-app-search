@@ -1,54 +1,72 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import axios from "axios";
-import CardAssets from "./Card";
 import SearchIcon from "@mui/icons-material/Search";
 import { blueGrey } from "@mui/material/colors";
 import StationList from "./StationList";
+import useDebounce from "../components/hooks/useDebounce";
+import { useQuery } from "react-query";
+
+import CardAssets from "./Card";
+import Loading from "./Loading";
 
 function Home() {
   const [query, setQuery] = useState("");
-  const [data, setData] = useState([]);
+ // const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+  const debouncedSearchTerm = useDebounce(query, 300);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Check if the query is null or has more than 2 characters
-      if (query === null || query.length > 2) {
-        const res = await axios.get(
-          import.meta.env.VITE_ASSETS_QUERY_URL_V2 + `${query}`
-        );
-        setData(res.data);
-      } 
-      else {
-        // If the query is null or less than 3 characters, fetch data from another API
-        const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
-        setData(anotherRes.data);
+  
+  // Create a query using react-query
+  const { data, isLoading, error , isError ,isFetching} = useQuery(
+      {
+          queryKey: ['', debouncedSearchTerm, selectedValue],
+          queryFn: fetchData,
+          refetchOnMount: true,
+          refetchOnWindowFocus: true,
+        }
+      );
+
+      // Fetch data based on the query
+      async function fetchData() {
+        if (debouncedSearchTerm === null || debouncedSearchTerm.length > 2) {
+          const res = await axios.get(import.meta.env.VITE_ASSETS_QUERY_URL_V2 + `${debouncedSearchTerm}`);
+          return res.data;
+        } 
+      else  if (selectedValue) {
+          const res = await axios.get(
+            import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
+         );
+         return res.data;
+        }
+        else {
+          const res = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
+          return res.data;
+        }
       }
-    };
 
-    if (query.length === 0 || query.length > 2) 
-    fetchData();
+      if (isError) {
+        return <h2>{error.message}</h2>;
+      }
+   // console.log(data);    
 
-  }, [query]);
 
-  useEffect(() => {
-    const fetchStation = async () => {
-      if (selectedValue) {
-        const res = await axios.get(
-          import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
-       );
-        setData(res.data);
-      } else {
-        const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
-      setData(anotherRes.data);
-      }      
-    };
-    fetchStation();  
+
+  // useEffect(() => {
+  //   const fetchStation = async () => {
+  //     if (selectedValue) {
+  //       const res = await axios.get(
+  //         import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
+  //      );
+  //       setData(res.data);
+  //     } else {
+  //       const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
+  //     setData(anotherRes.data);
+  //     }      
+  //   };
+  //   fetchStation();  
     
-  }, [selectedValue]);
-
-  // console.log(query);
+  // }, [selectedValue]);
 
   const handleSearch = (event,value) => {
     setSearchTerm(event.target.value);
@@ -109,9 +127,15 @@ function Home() {
      </div>
       </div>
 
- 
+    <CardAssets data={data} query={query} isLoading={isLoading} isFetching={isFetching}/> 
 
-      <CardAssets data={data} query={query} />
+    {isLoading || isFetching ?
+      <Loading />
+      : null}
+
+    {error ? <div>Error: {error.message}</div> : null}
+
+    
 
     </div>
   );

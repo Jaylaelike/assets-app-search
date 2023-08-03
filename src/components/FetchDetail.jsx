@@ -26,7 +26,7 @@ function FetchDetial() {
           }
         ); // Replace with your API endpoint
         setData(response.data);
-        console.log(response.data);
+       // console.log(response.data);
       } catch (error) {
         console.log("Error is :", error);
       }

@@ -34,7 +34,7 @@ function FetchImage() {
         // const dataURL = `data:${response.headers["content-type"]};base64,${base64Image}`;
         const dataURL = response.data[0].image_url;
         setData(dataURL);
-        console.log(data);
+        //console.log(data);
       } catch (error) {
         console.error("Error fetching image:", error);
       }

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Avatar, Skeleton, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
+
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardContent from "@mui/material/CardContent";
@@ -10,19 +10,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 
-export const CardAssets = ({ data }) => {
-  const [loading, setLoading] = useState(true);
+
+export const CardAssets = ({ data , isFetching}) => {
+ // const [loading, setLoading] = useState(true);
   const MOCKUP_IMAGE_URL = 'https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp';
 
-  useEffect(() => {
-    if (data !== "") {
-      setTimeout(() => {
-        setLoading(false);
-      }, 3000);
-    } else {
-      setLoading(true);
-    }
-  }, [data]);
 
   const navigate = useNavigate();
 
@@ -36,7 +28,10 @@ export const CardAssets = ({ data }) => {
   //console.log(`data is : ${data.map(item => item.No )}`);
 
   return (
-    <Grid
+    <>
+
+{data ? (
+      <Grid
       container
       spacing={{ xs: 2, md: 1 }}
       columns={{ xs: 4, sm: 8, md: 16 }}
@@ -47,7 +42,7 @@ export const CardAssets = ({ data }) => {
           <Card sx={{ maxWidth: 345, m: 2 }}>
             <CardHeader
               avatar={
-                loading ? (
+                isFetching ? (
                   <Skeleton
                     animation="wave"
                     variant="circular"
@@ -65,14 +60,14 @@ export const CardAssets = ({ data }) => {
                 )
               }
               action={
-                loading ? null : (
+                isFetching ? null : (
                   <IconButton aria-label="settings">
                     <MoreVertIcon />
                   </IconButton>
                 )
               }
               title={
-                loading ? (
+                isFetching ? (
                   <Skeleton
                     animation="wave"
                     height={10}
@@ -86,7 +81,7 @@ export const CardAssets = ({ data }) => {
                 )
               }
               subheader={
-                loading ? (
+                isFetching ? (
                   <Skeleton animation="wave" height={10} width="40%" />
                 ) : (
                   <div className="flex justify-start">
@@ -95,7 +90,7 @@ export const CardAssets = ({ data }) => {
                 )
               }
             />
-            {loading ? (
+            {isFetching ? (
               <Skeleton
                 sx={{ height: 190 }}
                 animation="wave"
@@ -115,7 +110,7 @@ export const CardAssets = ({ data }) => {
             )}
 
             <CardContent>
-              {loading ? (
+              {isFetching ? (
                 <div>
                   <Skeleton
                     animation="wave"
@@ -138,6 +133,10 @@ export const CardAssets = ({ data }) => {
         </Grid>
       ))}
     </Grid>
+       
+      ) : null}
+    </>
+   
   );
 };
 

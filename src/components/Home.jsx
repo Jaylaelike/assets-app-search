@@ -8,13 +8,18 @@ import { useQuery } from "react-query";
 
 import CardAssets from "./Card";
 import Loading from "./Loading";
+import StatusList from "./StatusList";
+import { useEffect } from "react";
+import { useMemo } from "react";
 
 function Home() {
   const [query, setQuery] = useState("");
  // const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedValue, setSelectedValue] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const debouncedSearchTerm = useDebounce(query, 300);
+
 
   
   // Create a query using react-query
@@ -33,12 +38,14 @@ function Home() {
           const res = await axios.get(import.meta.env.VITE_ASSETS_QUERY_URL_V2 + `${debouncedSearchTerm}`);
           return res.data;
         } 
-      else  if (selectedValue) {
+
+      if (selectedValue) {
           const res = await axios.get(
             import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
          );
          return res.data;
-        }
+          }
+      
         else {
           const res = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
           return res.data;
@@ -48,25 +55,8 @@ function Home() {
       if (isError) {
         return <h2>{error.message}</h2>;
       }
-   // console.log(data);    
-
-
-
-  // useEffect(() => {
-  //   const fetchStation = async () => {
-  //     if (selectedValue) {
-  //       const res = await axios.get(
-  //         import.meta.env.VITE_ASSETS_STATION_FILTER + `${selectedValue}`
-  //      );
-  //       setData(res.data);
-  //     } else {
-  //       const anotherRes = await axios.get(import.meta.env.VITE_IMAGES_URL_V2);
-  //     setData(anotherRes.data);
-  //     }      
-  //   };
-  //   fetchStation();  
-    
-  // }, [selectedValue]);
+   console.log(data); 
+   
 
   const handleSearch = (event,value) => {
     setSearchTerm(event.target.value);
@@ -79,8 +69,31 @@ function Home() {
     console.log(selectedValue);
   };
 
+
+
+  const handleOptionSelectedStatus = (value) => {
+    setSelectedStatus(value);
+    console.log(selectedStatus);
+  };
+
+  // filteredData = selectedStatus
+  // ? data.filter((item) => item.Status === selectedStatus)
+  // : data;
+
+     // Filter the data using useMemo
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const filteredData = useMemo(() => {
+      if (!data) return [];
+      if (!selectedStatus) return data; // Return the original data if no filter is selected
+  
+      // Filter the data based on the selected filter value
+      return data.filter((item) => item.Status === selectedStatus);
+    }, [data, selectedStatus]);
+
   const handleClear = () => {
     setSelectedValue(null);
+    setSearchTerm(null);
+    setSelectedStatus(null);
   };
 
   return (
@@ -119,21 +132,37 @@ function Home() {
          
          
 
-        <div className="grid grid-cols-1 justify-center gap-2">
+        <div className="grid grid-cols-2 justify-center gap-2">
         <StationList onOptionSelected={handleOptionSelected} onClear={handleClear} />
+        <StatusList  onOptionSelected={handleOptionSelectedStatus} onClear={handleClear} />
         </div>
       
   
      </div>
       </div>
 
-    <CardAssets data={data} query={query} isLoading={isLoading} isFetching={isFetching}/> 
+    <CardAssets data={filteredData} query={query} isLoading={isLoading} isFetching={isFetching}/> 
 
     {isLoading || isFetching ?
       <Loading />
       : null}
 
     {error ? <div>Error: {error.message}</div> : null}
+
+
+{/* 
+    {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <ul>
+          {filteredData.map((item) => (
+            <li key={item.id}>{item.Name_Item}</li>
+          ))}
+        </ul>
+      )}
+
+      {isFetching && !isLoading ? <div>Fetching...</div> : null} */}
+
 
     
 

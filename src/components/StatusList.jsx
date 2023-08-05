@@ -45,7 +45,7 @@ function StatusList({ onOptionSelected, onClear }) {
         onChange={handleOptionSelected} // Call the callback function when an option is selected
         value={selectedValue} 
         sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="สถานะ" />}
+        renderInput={(params) => <TextField {...params} label="สถานี" />}
       />
       <button onClick={handleClear}>Clear</button>
       </div>

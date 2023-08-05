@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState , useMemo} from "react";
 import axios from "axios";
 import SearchIcon from "@mui/icons-material/Search";
 import { blueGrey } from "@mui/material/colors";
@@ -9,8 +9,7 @@ import { useQuery } from "react-query";
 import CardAssets from "./Card";
 import Loading from "./Loading";
 import StatusList from "./StatusList";
-import { useEffect } from "react";
-import { useMemo } from "react";
+
 
 function Home() {
   const [query, setQuery] = useState("");
@@ -76,9 +75,6 @@ function Home() {
     console.log(selectedStatus);
   };
 
-  // filteredData = selectedStatus
-  // ? data.filter((item) => item.Status === selectedStatus)
-  // : data;
 
      // Filter the data using useMemo
   // eslint-disable-next-line react-hooks/rules-of-hooks

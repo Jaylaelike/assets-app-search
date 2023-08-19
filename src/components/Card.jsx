@@ -15,7 +15,6 @@ export const CardAssets = ({ data , isFetching}) => {
  // const [loading, setLoading] = useState(true);
   const MOCKUP_IMAGE_URL = 'https://cdn.vectorstock.com/i/preview-2x/84/01/rainbow-gradient-mesh-blurred-background-vector-29298401.webp';
 
-
   const navigate = useNavigate();
 
   const handleClick = (itemId) => {
@@ -100,6 +99,7 @@ export const CardAssets = ({ data , isFetching}) => {
               <CardMedia
                 component="img"
                 height="140"
+                width="140"
                 image={
                   item.image_url || MOCKUP_IMAGE_URL
                 }

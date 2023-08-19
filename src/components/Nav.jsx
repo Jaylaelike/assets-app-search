@@ -13,9 +13,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+
 
 
 
@@ -131,10 +129,10 @@ export default function ResponsiveAppBar() {
              <ListItemButton>
              <Typography textAlign="center">
              <Link style={{textDecoration: "none", color:"black"}}  to={`/${page}`} >{page}
-             <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+             {/* <ListItemIcon>
+                  {index % 2 === 0 ? <HomeMaxRounded /> : <MailIcon />}
                  
-                </ListItemIcon>
+                </ListItemIcon> */}
                 </Link>
             </Typography>
              </ListItemButton>

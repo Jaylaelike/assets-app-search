@@ -57,6 +57,14 @@ function Home() {
     setIsListening((prevIsListening) => !prevIsListening);
   };
 
+  if (!isListening) {
+    // Automatically stop listening after 3 seconds
+    setTimeout(() => {
+      setIsListening(false);
+    }, 8000);
+  }
+
+
   // Create a query using react-query
   const { data, isLoading, error, isError, isFetching } = useQuery({
     queryKey: ["", debouncedSearchTerm, selectedValue],

@@ -88,9 +88,9 @@ function Home() {
   if (isError) {
     return <h2>{error.message}</h2>;
   }
-  console.log(data);
-  console.log(isError);
-  console.log(error);
+  // console.log(data);
+  // console.log(isError);
+  // console.log(error);
 
   const handleSearch = (event, value) => {
     //setSearchTerm(event.target.value);
